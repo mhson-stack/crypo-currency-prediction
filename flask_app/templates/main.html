@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Currency</title>
+    <!-- CSS -->
+    <link href="{{ url_for ('static', filename='style.css') }}" rel="stylesheet">
+    <!-- JS -->
+    <link href="{{ url_for ('static', filename='script.js') }}">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+
+</head>
+<body class="body">
+    <div class="navbar-no-shadow wf-section">
+        <div data-animation="default" data-collapse="medium" data-duration="400" data-easing2="ease" role="banner" class="navbar-no-shadow-container w-nav">
+            <div class="container-regular">
+                <div class="navbar-wrapper">
+                    <a href="#" class="navbar-brand w-nav-brand"><img src="https://uploads-ssl.webflow.com/62434fa732124aofb112aab4/62434fa732124a332512aaee_placeholder-1.svg" loading="lazy" alt=""></a>
+                    <nav role="navigation" class= "nav-menu-wrapperw-nav-menu">
+                        <ul role="list" class="nav-menu w-list-unstyled">
+                            <li>
+                                <a href="#" class="nav-link">About</a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link">Feature</a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link">User Examples</a>
+                            </li>
+                            <li>
+                                <a href="#" class= "nav-link">Pricing</a>
+                            </li>
+                            <li>
+                                <div data-hover="false" data-delay="O" class="nav-dropdown w-dropd">
+                                    <div class="nav-dropdown-toggle w-dropdown-toggle">
+                                        <div class="nav-dropdown-icon w-icon-dropdown-toggle"></div>
+                                        <div>Resources</div>
+                                    </div>
+                                    <nav class="nav-dropdown-list shadow-three mobile-shadow-hide w.">
+                                        <a href="#"class="nav-dropdown-link w-dropdown-link">Resource Link 1</a>
+                                        <a href="#" class="nav-dropdown-link w-dropdown-link">Resource Link 2</a>
+                                        <a href="#"class="nav-dropdown-link w-dropdown-link">Resource Link 3</a>
+                                    </nav>
+                                </div>
+                            </li>
+                            <li class="mobile-margin-top-10">
+                                <div class="nav-button-wrapper">
+                                    <a href="#" class="button-primary w-button">Get Started</a>
+                                </div>
+                            </li>
+                        </nav>
+                        <div class="menu-button w-nav-button">
+                            <div class="w-icon-nav-menu"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <script src=""></script>
+    <main class="main-body">
+        <iframe width="1000" height="800" seamless frameBorder="0" 
+        src="http://127.0.0.1:8088/superset/dashboard/p/dEZ7wAeXQD0/"></iframe>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                var sock = io.connect('http://127.0.0.1:9999');
+                sock.on('connect', function(){
+                    var connect_string = 'new_connect';
+                    sock.send(connect_string);
+                });
+                sock.on('hello', function(msg){
+                    $('#messages').append('<li>' +'>>Hello :'+ msg + '</li>');
+                    console.log('Received Hello Message');
+                });
+                sock.on('message', function(msg){
+                    // console.log(type(msg));
+                    if(msg.type === 'normal'){
+                        $('#messages').append('>> '+msg.message+'<br>');
+                        }
+                    else{
+                        $('#messages').append('<li>' + msg.message + '</li>');
+                        }
+                    console.log('Received Message : '+msg.type);
+                    });
+                    $('#sendbutton').on('click', function(){
+                        sock.send($('#myMessage').val());
+                        $('#myMessage').val('');
+                    });
+                });
+        </script>
+    </main>
+</body>
+</html>
